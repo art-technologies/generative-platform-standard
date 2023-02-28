@@ -23,7 +23,9 @@ This project aims to define the standard between Generative platform and Generat
 
 ## Instructions for Artists
 
-### Download asset
+Artist may choose to implement one or more features that Generative platform supports. Most important feature is Download Asset.
+
+### Download Asset
 
 To allow Generative paltform trigger high quality asset download add the following code.
 
@@ -40,7 +42,7 @@ function downloadAsset() {
 }
 ```
 
-### Preview Capture trigger
+### Preview Capture Trigger
 
 To implement preview capture trigger add the following code
 
