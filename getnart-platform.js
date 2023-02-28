@@ -15,17 +15,12 @@
 
 class GenArtPlatform {
   onLoadingComplete = () => {};
-  onDownloadAsset = () => {};
 
   // `iframeSelector` - identifies generative project iframe
   constructor(iframeSelector) {
     this.iframe = iframeSelector;
-    /** Checks if iframe implements downloading image support */
-    if (iframeSelector.contentWindow.$implementsDownloadAsset) {
-      this.onDownloadAsset();
-    }
 
-    /** Checks if iframe implements loading events */
+    /** Checks if iframe implements loading events and listens to events if so subscribe to events */
     if (iframeSelector.contentWindow.$implementsDelegatedLoading) {
       const strongRef = this;
       window.addEventListener("message", function (event) {
