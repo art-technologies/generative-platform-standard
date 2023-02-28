@@ -11,9 +11,7 @@ Generative project - code written by artists that is embedded as an iframe into 
 
 ## Motivation
 
-A lot of generative art collectors wants to download or print high quality outpputs they purchase. However, present experience of downloading high quality asset often pressing a key or adding aditional parameters to the iframe URL. It should be easier for collectors to download high quality assets of their favourite works by simply clicking a download button that Generative platform implements based on their UI and product needs.
-
-This will be accomplished by Generative platform having a download button that triggers downlaod method within the generative project implemented by the artist.
+A lot of generative art collectors wants to download or print high quality outputs they purchase. However, present experience of downloading high quality asset consists of pressing a key or adding aditional parameters to the iframe URL. It should be easier for collectors to download high quality assets of their favourite artworks by simply clicking a download button that Generative platform implements based on their UI and product needs.
 
 This project aims to define the standard between Generative platform and Generative projects to accomplish aforementiond task and address most common problems.
 
