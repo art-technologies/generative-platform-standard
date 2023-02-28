@@ -1,0 +1,80 @@
+<html>
+  <head>
+    <title>Generative Platform</title>
+    <script></script>
+    <!-- Generative Platform import used on platforms like Verse -->
+    <script src="./getnart-platform.js"></script>
+    <script defer>
+      /***
+       * Application specific logic
+       * Application should overwrite methods based on UI implementation
+       **/
+
+      /**
+       * Application implementation of loader show/hide logic.
+       */
+      function hideLoader() {
+        document.getElementById("loader").style.visibility = "hidden";
+      }
+
+      function showLoader() {
+        document.getElementById("loader").style.visibility = "visible";
+      }
+
+      let genProject;
+      window.onload = function () {
+        const iframe = document.querySelector("iframe");
+        genProject = new GenArtPlatform(iframe);
+
+        // log all available generative project implementations
+        console.log(genProject.projectImplementations);
+
+        // if Generative project delegates loading to Generative platform loader, show platform loader
+        if (genProject.implementsDelegatedLoading) {
+          showLoader();
+          genProject.onLoadingComplete = hideLoader;
+        }
+
+        // if generative project supports asset download, show "Download" button
+        if (genProject.implementsDownloadAsset) {
+          document.getElementById("downloadImage").style.visibility = "visible";
+        }
+      };
+    </script>
+    <style>
+      .app {
+        width: 400px;
+        height: 400px;
+        position: relative;
+      }
+
+      .image {
+        width: 100%;
+        height: 100%;
+        border: 0;
+        position: absolute;
+      }
+
+      #loader {
+        background: rgb(228, 228, 228);
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        visibility: hidden;
+      }
+
+      #downloadImage {
+        visibility: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <div id="loader">Loading in Platform</div>
+      <iframe class="image" src="./generative-project/index.html"></iframe>
+    </div>
+    <button id="downloadImage" onclick="genProject.signalDownloadAsset()">
+      Download
+    </button>
+  </body>
+</html>
