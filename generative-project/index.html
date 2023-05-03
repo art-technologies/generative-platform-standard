@@ -18,12 +18,13 @@
        */
 
       /*
-       * Download Asset
+       * DSignals
        *
-       * Description: Indicates to the Generative platform that Generative project implements `downloadImage` method.
+       * Description: Indicates to the Generative platform actions that can be signalled to generative project.
        *
-       * Instructions: to implement this feature add below code to your project and implement `downloadAsset` method
-       * which will be called by the platform when user clicks on the download button to download a high quality asset.
+       * Instructions: to implement this feature add below code to your project define list of operations that can be
+       * signalled from Generative platform to generative project. Generative project should be able to understand the
+       * signals.
        */
 
       window.$implementsSignals = [
@@ -84,7 +85,6 @@
         console.log("downloading asset");
 
         const canvas = document.querySelector("canvas");
-        const downloadButton = document.getElementById("downloadButton");
         const dataURL = canvas.toDataURL("image/png");
         const link = document.createElement("a");
         link.download = "canvas.png";

@@ -31,16 +31,8 @@ class GenArtPlatform {
     }
   }
 
-  signalDownloadAsset() {
-    this.iframe.contentWindow.postMessage("download-asset", "*");
-  }
-
   signalMessage(signal) {
     this.iframe.contentWindow.postMessage(signal, "*");
-  }
-
-  get implementsDownloadAsset() {
-    return this.iframe?.contentWindow?.$implementsDownloadAsset || false;
   }
 
   get implementsDelegatedLoading() {
