@@ -30,7 +30,7 @@ Artist may choose to implement one or more features that Generative platform sup
 To allow Generative platform trigger signals such as asset download implement the following code.
 
 ```js
-      window.$implementsSignals = [
+window.$implementsSignals = [
     {
         "type": "download",
         "key": "download-small",
