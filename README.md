@@ -25,21 +25,34 @@ This project aims to define the standard between Generative platform and Generat
 
 Artist may choose to implement one or more features that Generative platform supports. Most important feature is Download Asset.
 
-### Download Asset
+### Signal download Asset
 
-To allow Generative paltform trigger high quality asset download add the following code.
+To allow Generative platform trigger signals such as asset download implement the following code.
 
 ```js
-window.$implementsDownloadAsset = true;
+      window.$implementsSignals = [
+    {
+        "type": "download",
+        "key": "download-small",
+        "text": "512 x 515"
+    },
+    {
+        "type": "download",
+        "key": "download-medium",
+        "text": "1024 x 1024"
+    },
+    {
+        "type": "download",
+        "key": "download-large",
+        "text": "2048 x 2048"
+    }
+]
 window.addEventListener("message", function (event) {
-  if (event.data == "download-asset") {
-    downloadAsset();
-  }
+    if (event.data?.type === "download") {
+        console.log(event.data)
+        downloadAsset(event.data);
+    }
 });
-
-function downloadAsset() {
-  // your download logic here
-}
 ```
 
 ### Preview Capture Trigger
