@@ -25,11 +25,28 @@
        * Instructions: to implement this feature add below code to your project and implement `downloadAsset` method
        * which will be called by the platform when user clicks on the download button to download a high quality asset.
        */
-      //
-      window.$implementsDownloadAsset = true;
+
+      window.$implementsSignals = [
+        {
+          "type": "download",
+          "key": "download-small",
+          "text": "512 x 515"
+        },
+        {
+          "type": "download",
+          "key": "download-medium",
+          "text": "1024 x 1024"
+        },
+        {
+          "type": "download",
+          "key": "download-large",
+          "text": "2048 x 2048"
+        }
+      ]
       window.addEventListener("message", function (event) {
-        if (event.data == "download-asset") {
-          downloadAsset();
+        if (event.data?.type === "download") {
+          console.log(event.data)
+          downloadAsset(event.data);
         }
       });
 
@@ -63,7 +80,7 @@
     </script>
     <script>
       // generative project specific logic to download an image implemented by the artist
-      function downloadAsset() {
+      function downloadAsset(data) {
         console.log("downloading asset");
 
         const canvas = document.querySelector("canvas");

@@ -36,8 +36,14 @@
         }
 
         // if generative project supports asset download, show "Download" button
-        if (genProject.implementsDownloadAsset) {
-          document.getElementById("downloadImage").style.visibility = "visible";
+        if (genProject.getSignals.length > 0) {
+          for (const signal of genProject.getSignals) {
+            const button = document.createElement("button");
+            button.innerText = signal.text;
+            button.onclick = () => genProject.signalMessage(signal);
+            document.querySelector(".signals").appendChild(button);
+          }
+          document.querySelector(".signals").style.visibility = "visible"
         }
       };
     </script>
@@ -63,7 +69,7 @@
         visibility: hidden;
       }
 
-      #downloadImage {
+      .signals {
         visibility: hidden;
       }
     </style>
@@ -73,8 +79,6 @@
       <div id="loader">Loading in Platform</div>
       <iframe class="image" src="./generative-project/index.html"></iframe>
     </div>
-    <button id="downloadImage" onclick="genProject.signalDownloadAsset()">
-      Download
-    </button>
+    <div class="signals"></div>
   </body>
 </html>

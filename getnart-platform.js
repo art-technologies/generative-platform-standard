@@ -35,6 +35,10 @@ class GenArtPlatform {
     this.iframe.contentWindow.postMessage("download-asset", "*");
   }
 
+  signalMessage(signal) {
+    this.iframe.contentWindow.postMessage(signal, "*");
+  }
+
   get implementsDownloadAsset() {
     return this.iframe?.contentWindow?.$implementsDownloadAsset || false;
   }
@@ -49,12 +53,16 @@ class GenArtPlatform {
     );
   }
 
+  get getSignals() {
+    return this.iframe?.contentWindow?.$implementsSignals || [];
+  }
+
   get projectImplementations() {
     return {
       downloadAsset: this.iframe.contentWindow.$implementsDownloadAsset,
       delegatedLoading: this.iframe.contentWindow.$implementsDelegatedLoading,
-      previewCaptureTrigger:
-        this.iframe.contentWindow.$implementsPreviewCaptureTrigger,
+      previewCaptureTrigger: this.iframe.contentWindow.$implementsPreviewCaptureTrigger,
+      signals:  this.iframe?.contentWindow?.$implementsSignals || [],
     };
   }
 }
