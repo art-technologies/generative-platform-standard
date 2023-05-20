@@ -1,0 +1,12 @@
+{
+  "name": "generative-platform-standard",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:art-technologies/generative-platform-standard.git",
+  "author": "sergyperov <sergyperov@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "finalhandler": "^1.2.0",
+    "serve-static": "^1.15.0"
+  }
+}
