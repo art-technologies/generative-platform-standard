@@ -1,17 +1,19 @@
-const finalhandler = require("finalhandler")
-const http = require("http")
-const serveStatic = require("serve-static")
-const path = require('path')
+var express = require('express')
+var path = require('path')
+var serveStatic = require('serve-static')
 
 const PLATFORM_PORT = 8080
 const PROJECT_PORT = 8081
 
-const servePlatform = serveStatic(path.join(__dirname, "./platform"))
-http.createServer(function onRequest (req, res) {
-    servePlatform(req, res, finalhandler(req, res))
-}).listen(PLATFORM_PORT)
+const platformApp = express()
+const projectApp = express()
 
-const serveProject = serveStatic(path.join(__dirname, "./project"))
-http.createServer(function onRequest (req, res) {
-    serveProject(req, res, finalhandler(req, res))
-}).listen(PROJECT_PORT)
+platformApp.use(serveStatic(path.join(__dirname, './platform')))
+platformApp.use(serveStatic(path.join(__dirname, '../src')))
+platformApp.listen(PLATFORM_PORT)
+console.log(`Example platform is running at http://localhost:${PLATFORM_PORT}`)
+
+projectApp.use(serveStatic(path.join(__dirname, './project')))
+projectApp.use(serveStatic(path.join(__dirname, '../src')))
+projectApp.listen(PROJECT_PORT)
+console.log(`Example project is running at http://localhost:${PROJECT_PORT}`)

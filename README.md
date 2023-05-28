@@ -21,16 +21,24 @@ This project aims to define the standard between Generative platform and Generat
 - Preview Capture Trigger - instructs Generative platform's preview capturing system to capture current state of the generated artwork.
 - Delegated Loading - allows Generative platform to show loading UI while Generative project is loading. When Generative project finishes loading
 
+## Standard Definition
+
+Formal definition of the standard can be found [here](STANDARD.md).
+
 ## Instructions for Artists
 
-Artist may choose to implement one or more features that Generative platform supports. Most important feature is Download Asset.
+Artist may choose to implement one or more features that Generative platform supports. Most important feature
+is Download Asset. We have prepared a small library that you can use to implement this feature. You can find
+it [here](build/genps-project.min.js) (minified) or [here](src/genps-project.js) (unminified).
 
-### Signal download Asset
+You can also find a full example of how to use it [here](example/project).
 
-To allow Generative platform trigger signals such as asset download implement the following code.
+### Download Asset
+#### Instructions
+To allow Generative platform trigger signals such as asset download implement the following code:
 
 ```js
-window.$implementsSignals = [
+genPSImplSignals = [
     {
         "type": "download",
         "key": "download-small",
@@ -47,39 +55,31 @@ window.$implementsSignals = [
         "text": "2048 x 2048"
     }
 ]
-window.addEventListener("message", function (event) {
-    if (event.data?.type === "download") {
-        console.log(event.data)
-        downloadAsset(event.data);
-    }
-});
+```
+
+Then define a function `genPSOnDownload`, library wil automatically call this function when user clicks on the download
+button.
+
+```js
+genPSOnDownload = (key) => {
+    console.log("downloading asset with key", key);
+    // ...
+}
 ```
 
 ### Preview Capture Trigger
+#### Description
+This trigger should be called when you want to instruct _Platform_ to capture current state of the artwork.
 
-To implement preview capture trigger add the following code
-
-```js
-window.$implementsPreviewCaptureTrigger = true;
-function capturePreview() {
-  dispatchEvent(new Event("capture-preview"));
-}
-```
-
-When your artwork is finished rendering call `capturePreview()` method.
+#### Instructions
+When your artwork is finished rendering call `genPSOnTriggerCaptPrev()` method.
 
 ### Delegated Loading
-
+#### Description
 To delegate loading UI to generative platform add the following code.
 
-```js
-window.$implementsDelegatedLoading = true;
-function loadingComplete() {
-  window.parent.postMessage("loading-complete", "*");
-}
-```
-
-When your project is finished loading or you'd like it to be displayed call `loadingComplete()` method.
+#### Instructions
+When your project is finished loading or you'd like it to be displayed call `genPSOnTriggerLoadCompl()` method.
 
 ## Instructions for platforms
 

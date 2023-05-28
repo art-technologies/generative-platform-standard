@@ -17,56 +17,6 @@
  * signals.
  */
 
-window.$generativePlatofrmStandard = {
-    methods: {},
-    handlers: {},
-}
-
-function buildGenArtStandardMessage(payload) {
-    return { generativePlatformStandard: { ...payload } }
-}
-
-function readGenArtStandardMessage(message) {
-    return message.generativePlatformStandard
-}
-
-window.addEventListener("message", (event) => {
-    const message = readGenArtStandardMessage(event.data);
-    if (!message) {
-        return;
-    }
-
-    if (message.type === "init-request") {
-        window.$generativePlatofrmStandard.id = message.id
-        event.source.postMessage(buildGenArtStandardMessage({
-            id: window.$generativePlatofrmStandard.id,
-            type: "init",
-            implementsSignals: window.$generativePlatofrmStandard.implementsSignals,
-        }), "*")
-    }
-
-    if (message.type === "download") {
-        const onDownloadHandler = window.$generativePlatofrmStandard.handlers.onDownload;
-        if (typeof onDownloadHandler === "function") {
-            onDownloadHandler(message.key);
-        }
-    }
-})
-
-window.$generativePlatofrmStandard.methods.loadingComplete = () => {
-    window.parent.postMessage(buildGenArtStandardMessage({
-        id: window.$generativePlatofrmStandard.id,
-        type: "loading-complete",
-    }), "*");
-}
-
-window.$generativePlatofrmStandard.methods.capturePreview = () => {
-    window.parent.postMessage(buildGenArtStandardMessage({
-        id: window.$generativePlatofrmStandard.id,
-        type: "capture-preview",
-    }), "*");
-}
-/* GEN ART STANDARD END */
 
 /*
  * Signals
@@ -77,7 +27,7 @@ window.$generativePlatofrmStandard.methods.capturePreview = () => {
  * signalled from Generative platform to generative project. Generative project should be able to understand the
  * signals.
  */
-window.$generativePlatofrmStandard.implementsSignals = [
+genPSImplSignals = [
     /*
      * Download (download)
      *
@@ -91,17 +41,17 @@ window.$generativePlatofrmStandard.implementsSignals = [
      * `triggerDownload` method is called.
      */
     {
-        "type": "download",
+        "type": "genps:f:download",
         "key": "download-small",
         "text": "512 x 515"
     },
     {
-        "type": "download",
+        "type": "genps:f:download",
         "key": "download-medium",
         "text": "1024 x 1024"
     },
     {
-        "type": "download",
+        "type": "genps:f:download",
         "key": "download-large",
         "text": "2048 x 2048"
     },
@@ -115,7 +65,7 @@ window.$generativePlatofrmStandard.implementsSignals = [
      * when you want Generative Platform to stop showing loader display the project.
      */
     {
-        "type": "loading-complete",
+        "type": "genps:b:loading-complete",
     },
     /*
      * Preview Capture Trigger (capture-preview)
@@ -127,7 +77,7 @@ window.$generativePlatofrmStandard.implementsSignals = [
      * method when you want preview image to be captured.
      */
     {
-        "type": "capture-preview",
+        "type": "genps:b:capture-preview",
     }
 ]
 
@@ -135,7 +85,7 @@ const sleep = (durationMs) => new Promise((resolve) => {
     setTimeout(resolve, durationMs);
 })
 
-window.$generativePlatofrmStandard.handlers.onDownload = (key) => {
+genPSOnDownload = (key) => {
     console.log("downloading asset");
 
     const canvas = document.querySelector("canvas");
@@ -166,7 +116,7 @@ async function draw() {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     // we're indicating that initial loading is complete
-    window.$generativePlatofrmStandard.methods.loadingComplete();
+    genPSOnTriggerLoadCompl();
 
     for (let i = 0; i < 200; i++) {
         ctx.beginPath();
@@ -177,7 +127,7 @@ async function draw() {
     }
 
     // we're indicating that project is ready to capture preview
-    window.$generativePlatofrmStandard.methods.capturePreview();
+    genPSOnTriggerCaptPrev();
 }
 
 setTimeout(() => {
