@@ -148,6 +148,8 @@ window.$generativePlatofrmStandard.handlers.onDownload = (key) => {
     document.body.removeChild(link);
 }
 
+const urlParams = new URLSearchParams(window.location.search);
+
 async function draw() {
     const canvas = document.querySelector("canvas");
     const ctx = canvas.getContext("2d");
@@ -156,8 +158,8 @@ async function draw() {
     ctx.canvas.height = window.innerWidth;
     // Create the gradient
     const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
-    gradient.addColorStop(0, "red");
-    gradient.addColorStop(1, "blue");
+    gradient.addColorStop(0, urlParams.get("color1") || "red");
+    gradient.addColorStop(1, urlParams.get("color2") || "blue");
 
     // Fill a rectangle with the gradient
     ctx.fillStyle = gradient;
@@ -180,5 +182,5 @@ async function draw() {
 
 setTimeout(() => {
     draw();
-}, 2000);
+}, +urlParams.get('timeout') || 2000);
 

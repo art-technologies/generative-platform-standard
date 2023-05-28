@@ -7,8 +7,24 @@
     <script src="./script.js" defer></script>
 </head>
 <body>
-    <iframe width="200" height="200" id="project-1" src="http://localhost:8081/"></iframe>
-    <div id="download-container"></div>
-    <div id="log"></div>
+<h1>Example with two <i>Projects</i> on the same page</h1>
+<p>
+    This example shows how Standard handles multiple <i>Projects</i> on same page.
+    <br />
+    Under the hood, <code>iframe.contentWindow === event.source</code> concept is used to distinguish between different <i>Projects</i>.
+</p>
+<div style="display: flex; column-gap: 40px;">
+    <div id="project-1">
+        <iframe width="200" height="200" class="project-iframe" src="http://localhost:8081/?color1=red&color2=blue&timeout=2000"></iframe>
+        <div class="download-container"></div>
+        <div class="log"></div>
+    </div>
+
+    <div id="project-2">
+        <iframe width="200" height="200" class="project-iframe" src="http://localhost:8081/?color1=yellow&color2=green&timeout=4000"></iframe>
+        <div class="download-container"></div>
+        <div class="log"></div>
+    </div>
+</div>
 </body>
 </html>
