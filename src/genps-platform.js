@@ -13,78 +13,56 @@
  * - Generative Project - iframe corresponding to generative artwork
  */
 
-function buildGenArtStandardMessage(payload) {
-  return {
-    generativePlatformStandard: {
-      ...payload,
-    }
-  }
-}
-
-function readGenArtStandardMessage(message) {
-  return message.generativePlatformStandard
-}
-
-const uniqueId = () => {
-  const dateString = Date.now().toString(36);
-  const randomness = Math.random().toString(36).substring(2);
-  return dateString + randomness;
-};
-
 class GenArtPlatform {
   // we will store all signals that are supported by a project here
   // we expect project to report the list of features within a postMessage
   implementsSignals = undefined;
-  id = undefined;
 
   // `iframeSelector` - identifies generative project iframe
   constructor(iframeElement, callbacks = {}) {
     this.callbacks = callbacks;
     this.iframe = iframeElement;
-    this.id = uniqueId();
 
     window.addEventListener("message", (event) => {
-      const message = readGenArtStandardMessage(event.data);
-      if (!message || message.id !== this.id) {
+      const message = event.data;
+      if (!message || this.iframe.contentWindow !== event.source) {
         return;
       }
 
-      if (message.type === "init" && message.implementsSignals) {
+      if (message.type === "genps:b:init" && message.implementsSignals) {
         this.implementsSignals = message.implementsSignals;
         if (typeof this.callbacks.onInit === "function") {
           this.callbacks.onInit(this.implementsSignals);
         }
       }
 
-      if (message.type === "loading-complete") {
+      if (message.type === "genps:b:loading-complete") {
         if (typeof this.callbacks.onLoadingComplete === "function") {
           this.callbacks.onLoadingComplete();
         }
       }
 
-      if (message.type === "capture-preview") {
+      if (message.type === "genps:b:capture-preview") {
         if (typeof this.callbacks.onCapturePreview === "function") {
           this.callbacks.onCapturePreview();
         }
       }
     })
     this.iframe.addEventListener("load", () => {
-      this.iframe.contentWindow.postMessage(buildGenArtStandardMessage({
-        id: this.id,
-        type: "init-request"
-      }), "*");
+      this.iframe.contentWindow.postMessage({
+        type: "genps:f:init"
+      }, "*");
     })
   }
 
   get downloadSignals() {
-    return this.implementsSignals?.filter((signal) => signal.type === "download");
+    return this.implementsSignals?.filter((signal) => signal.type === "genps:f:download");
   }
 
   triggerDownload(key) {
-    this.iframe.contentWindow.postMessage(buildGenArtStandardMessage({
-      id: this.id,
-      type: "download",
+    this.iframe.contentWindow.postMessage({
+      type: "genps:f:download",
       key,
-    }), "*");
+    }, "*");
   }
 }
