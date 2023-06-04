@@ -57,13 +57,17 @@ genPSImplSignals = [
 ]
 ```
 
-Then define a function `genPSOnDownload`, library wil automatically call this function when user clicks on the download
-button.
+Then define a function `genPSOnDownload`, library will automatically call this function when user clicks on the download
+button. Second argument is a callback you need to invoke when dataURL for image is ready.
+
+**Project does not initiate download within this standard. Instead, it sends data url to platform
+and platform handles download on its own.**
 
 ```js
-genPSOnDownload = (key) => {
-    console.log("downloading asset with key", key);
-    // ...
+genPSOnDownload = (key, onReady) => {
+    const canvas = document.querySelector("canvas");
+    const dataURL = canvas.toDataURL("image/png");
+    onReady(dataURL, "png");
 }
 ```
 
