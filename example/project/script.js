@@ -85,17 +85,12 @@ const sleep = (durationMs) => new Promise((resolve) => {
     setTimeout(resolve, durationMs);
 })
 
-genPSOnDownload = (key) => {
+genPSOnDownload = (key, onReady) => {
     console.log("downloading asset");
 
     const canvas = document.querySelector("canvas");
     const dataURL = canvas.toDataURL("image/png");
-    const link = document.createElement("a");
-    link.download = `${key}.png`;
-    link.href = dataURL;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    onReady(dataURL, "png");
 }
 
 const urlParams = new URLSearchParams(window.location.search);
