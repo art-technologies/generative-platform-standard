@@ -7,8 +7,8 @@ function initGenArtPlatform(containerElement) {
     const downloadContainer = containerElement.querySelector(".download-container");
 
     const genArtPlatform = new GenArtPlatform(projectIframe, {
-        onInit: (signals) => {
-            logElement.innerHTML += `<div><b>[EVENT FIRED]</b> onInit, supported signals:</div>`;
+        onInit: (version, signals) => {
+            logElement.innerHTML += `<div><b>[EVENT FIRED]</b> onInit, <i>project version: ${version}</i>, supported signals:</div>`;
             logElement.innerHTML += `<pre>${JSON.stringify(signals, undefined, 4)}</pre>`;
 
             genArtPlatform.downloadSignals.forEach((signal) => {

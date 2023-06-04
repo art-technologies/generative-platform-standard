@@ -1,5 +1,10 @@
 # Generative Platform Standard Description
 
+## Standard versioning
+
+This standard is versioned using [Semantic Versioning](https://semver.org/). The version number is
+defined in `package.json` file.
+
 ## Signal format
 
 The main communication channel between _Platform_ and _Project_ is `window.postMessage` method.
@@ -27,11 +32,15 @@ Additional fields are optional and depend on the signal type.
 #### Description
 This signal should be sent from _Platform_ to _Project_ to initialize the communication channel.
 After the message is received by _Project_ it should send a `genps:b:init` message back to _Platform_.
+Version of the standard should be specified in the `v` field. It is allowed to omit minor and patch numbers if
+they are zero (e.g. `"1"` instead of `"1.0.0""`).
 
 #### Example
+
 ```json
 {
-    "type": "genps:f:init"
+  "type": "genps:f:init",
+  "v": "1"
 }
 ```
 
@@ -91,10 +100,10 @@ _Platform_ can use this signal in order to make a screenshot of a _Project_.
 }
 ```
 
-### `genps:b:download`
+### `genps:f:download`
 #### Description
 This signal should be sent from _Platform_ to _Project_ when the user clicks on the download button.
-Therefore, _Project_ should generate a downloadable file and initiate the download process.
+Therefore, _Project_ should generate a data url with the image and send it back to _Platform_ via `genps:b:download` signal.
 Two additional properties that can exists are `key` and `text`. `key` is a unique identifier of the
 download option and `text` is a text that should be displayed to the user. It is helpful when
 _Project_ supports multiple download options (e.g. different sizes of the image).
@@ -108,4 +117,18 @@ _Project_ supports multiple download options (e.g. different sizes of the image)
 }
 ```
 
+### `genps:b:download`
+#### Description
+_Project_ should reply on `genps:f:download` signal with this signal. It should contain a data url
+with the image that should be downloaded. Projects are supposed to be used with `sandbox` attribute,
+so it is not possible to download the image directly from the _Project_. Two required properties
+are `dataUrl` and `ext`. `dataUrl` is a data url with the image and `ext` is a file extension of the image.
 
+#### Example
+```json
+{
+  "type": "genps:b:download",
+  "dataUrl": "...",
+  "ext": "png"
+}
+```
