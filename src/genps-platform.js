@@ -44,7 +44,7 @@ class GenArtPlatform {
         return;
       }
 
-      if (message.type === "genps:b:init" && message.implementsSignals) {
+      if (message.type === "gps:b:init" && message.implementsSignals) {
         this.projectStandardVersion = message.v;
         this.implementsSignals = message.implementsSignals;
         if (typeof this.callbacks.onInit === "function") {
@@ -52,19 +52,19 @@ class GenArtPlatform {
         }
       }
 
-      if (message.type === "genps:b:loading-complete") {
+      if (message.type === "gps:b:load-compl") {
         if (typeof this.callbacks.onLoadingComplete === "function") {
           this.callbacks.onLoadingComplete();
         }
       }
 
-      if (message.type === "genps:b:capture-preview") {
+      if (message.type === "gps:b:capt-prev") {
         if (typeof this.callbacks.onCapturePreview === "function") {
           this.callbacks.onCapturePreview();
         }
       }
 
-      if (message.type === "genps:b:download") {
+      if (message.type === "gps:b:download") {
         // is project initiated download without prior request from platform - ignore it
         if (!this.pendingDownload) {
           return
@@ -76,20 +76,20 @@ class GenArtPlatform {
     })
     this.iframe.addEventListener("load", () => {
       this.iframe.contentWindow.postMessage({
-        type: "genps:f:init",
+        type: "gps:f:init",
         v: GENERATIVE_PLATFORM_STANDARD_VERSION,
       }, "*");
     })
   }
 
   get downloadSignals() {
-    return this.implementsSignals?.filter((signal) => signal.type === "genps:f:download");
+    return this.implementsSignals?.filter((signal) => signal.type === "gps:f:download");
   }
 
   triggerDownload(key) {
     this.pendingDownload = { key };
     this.iframe.contentWindow.postMessage({
-      type: "genps:f:download",
+      type: "gps:f:download",
       key,
     }, "*");
   }

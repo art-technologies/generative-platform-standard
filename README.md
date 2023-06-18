@@ -38,7 +38,7 @@ You can also find a full example of how to use it [here](example/project).
 To allow Generative platform trigger signals such as asset download implement the following code:
 
 ```js
-genPSImplSignals = [
+gpsImplSignals = [
     {
         "type": "download",
         "key": "download-small",
@@ -57,14 +57,14 @@ genPSImplSignals = [
 ]
 ```
 
-Then define a function `genPSOnDownload`, library will automatically call this function when user clicks on the download
+Then define a function `gpsOnDownload`, library will automatically call this function when user clicks on the download
 button. Second argument is a callback you need to invoke when dataURL for image is ready.
 
 **Project does not initiate download within this standard. Instead, it sends data url to platform
 and platform handles download on its own.**
 
 ```js
-genPSOnDownload = (key, onReady) => {
+gpsOnDownload = (key, onReady) => {
     const canvas = document.querySelector("canvas");
     const dataURL = canvas.toDataURL("image/png");
     onReady(dataURL, "png");
@@ -76,14 +76,23 @@ genPSOnDownload = (key, onReady) => {
 This trigger should be called when you want to instruct _Platform_ to capture current state of the artwork.
 
 #### Instructions
-When your artwork is finished rendering call `genPSOnTriggerCaptPrev()` method.
+When your artwork is finished rendering call `gpsCaptPrev()` method.
 
 ### Delegated Loading
 #### Description
 To delegate loading UI to generative platform add the following code.
 
 #### Instructions
-When your project is finished loading or you'd like it to be displayed call `genPSOnTriggerLoadCompl()` method.
+When your project is finished loading or you'd like it to be displayed call `gpsLoadCompl()` method.
+
+## Note for On-Chain projects
+
+We do understand that for on-chain project size of the project is very important.
+The actual minified standard is less than 500 bytes. However, if you're not using all the features
+you can do the following:
+1. Edit [source file](/src/genps-project.js) to remove unused features
+2. Minify the file either using `yarn build:project` or using any other cusom tool for minifaction
+3. Use the minified file in your project
 
 ## Instructions for platforms
 
