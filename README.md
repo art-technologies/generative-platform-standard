@@ -27,6 +27,8 @@ Formal definition of the standard can be found [here](STANDARD.md).
 
 ## Instructions for Artists
 
+**Note: If you're building On-Chain project, please refer to [this section](#note-for-on-chain-projects).**
+
 Artist may choose to implement one or more features that Generative platform supports. Most important feature
 is Download Asset. We have prepared a small library that you can use to implement this feature. You can find
 it [here](build/genps-project.min.js) (minified) or [here](src/genps-project.js) (unminified).
