@@ -14,7 +14,7 @@
     "uglify-js": "^3.17.4"
   },
   "scripts": {
-    "build:project": "uglifyjs --compress --mangle --output build/genps-project.min.js -- src/genps-project.js",
+    "build:project": "uglifyjs --compress --mangle --toplevel --output build/genps-project.min.js -- src/genps-project.js",
     "build:platform": "uglifyjs --compress --mangle --output build/genps-platform.min.js -- src/genps-platform.js",
     "build": "yarn build:project && yarn build:platform",
     "example": "node example/server.js"

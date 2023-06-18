@@ -3,8 +3,8 @@
 *
 * Each project can implement one or more of the following methods:
 * - `download`- if generative platform should display a button for high quality asset download
-* - `loading-complete` - if generative platform should display a loader until project is ready to be displayed
-* - `capture-preview` - if generative platform should wait for a trigger to capture a preview image
+* - `load-compl` - if generative platform should display a loader until project is ready to be displayed
+* - `capt-prev` - if generative platform should wait for a trigger to capture a preview image
 */
 
 /*
@@ -27,7 +27,7 @@
  * signalled from Generative platform to generative project. Generative project should be able to understand the
  * signals.
  */
-genPSImplSignals = [
+gpsImplSignals = [
     /*
      * Download (download)
      *
@@ -41,22 +41,22 @@ genPSImplSignals = [
      * `triggerDownload` method is called.
      */
     {
-        "type": "genps:f:download",
+        "type": "gps:f:download",
         "key": "download-small",
         "text": "512 x 515"
     },
     {
-        "type": "genps:f:download",
+        "type": "gps:f:download",
         "key": "download-medium",
         "text": "1024 x 1024"
     },
     {
-        "type": "genps:f:download",
+        "type": "gps:f:download",
         "key": "download-large",
         "text": "2048 x 2048"
     },
     /*
-     * Delegated Loading (loading-complete)
+     * Delegated Loading (load-compl)
      *
      * Description: Indicates to the Generative platform that it should be responsible for showing loader UI
      * until project is ready to be displayed.
@@ -65,10 +65,10 @@ genPSImplSignals = [
      * when you want Generative Platform to stop showing loader display the project.
      */
     {
-        "type": "genps:b:loading-complete",
+        "type": "gps:b:load-compl",
     },
     /*
-     * Preview Capture Trigger (capture-preview)
+     * Preview Capture Trigger (capt-prev)
      *
      * Description: Indicates to the Generative platform preview generator that Generative project
      * will trigger when to capture a preview image.
@@ -77,7 +77,7 @@ genPSImplSignals = [
      * method when you want preview image to be captured.
      */
     {
-        "type": "genps:b:capture-preview",
+        "type": "gps:b:capt-prev",
     }
 ]
 
@@ -85,7 +85,7 @@ const sleep = (durationMs) => new Promise((resolve) => {
     setTimeout(resolve, durationMs);
 })
 
-genPSOnDownload = (key, onReady) => {
+gpsOnDownload = (key, onReady) => {
     console.log("downloading asset");
 
     const canvas = document.querySelector("canvas");
@@ -111,7 +111,7 @@ async function draw() {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     // we're indicating that initial loading is complete
-    genPSOnTriggerLoadCompl();
+    gpsLoadCompl();
 
     for (let i = 0; i < 200; i++) {
         ctx.beginPath();
@@ -122,7 +122,7 @@ async function draw() {
     }
 
     // we're indicating that project is ready to capture preview
-    genPSOnTriggerCaptPrev();
+    gpsCaptPrev();
 }
 
 setTimeout(() => {
