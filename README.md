@@ -17,9 +17,9 @@ This project aims to define the standard between Generative platform and Generat
 
 ## Current features
 
-- Download Asset - allows Generative Platform to trigger downloading high quality asset rendered by Generative project. Generative platform may implement download button according to their own product and branding guidelines.
-- Preview Capture Trigger - instructs Generative platform's preview capturing system to capture current state of the generated artwork.
-- Delegated Loading - allows Generative platform to show loading UI while Generative project is loading. When Generative project finishes loading
+- **Download Asset** - allows Generative Platform to trigger downloading high quality asset rendered by Generative project. Generative platform may implement download button according to their own product and branding guidelines.
+- **Preview Capture Trigger** - instructs Generative platform's preview capturing system to capture current state of the generated artwork.
+- **Delegated Loading** - allows Generative platform to show loading UI while Generative project is loading. When Generative project finishes loading
 
 ## Standard Definition
 
@@ -87,7 +87,7 @@ To delegate loading UI to generative platform add the following code.
 #### Instructions
 When your project is finished loading or you'd like it to be displayed call `gpsLoadCompl()` method.
 
-## Note for On-Chain projects
+### Note for On-Chain projects
 
 We do understand that for on-chain project size of the project is very important.
 The actual minified standard is less than 500 bytes. However, if you're not using all the features
@@ -98,4 +98,62 @@ you can do the following:
 
 ## Instructions for platforms
 
-TBD. Example in `index.html`.
+All work with standard API is done within `GenArtPlatform` class.
+Source code can be found [here](/src/genps-platform.js).
+You can also check out [example](/example/platform) to see how it works.
+
+### Initialising a class
+Given a project is always an `iframe` you need to pass a DOM element of an `iframe` to the class:
+```js
+const projectIframe = containerElement.querySelector(".project-iframe");
+new GenArtPlatform(projectIframe, {
+  // here we pass callbacks that will be discussed later  
+})
+```
+
+**Note:** library will handle case with multiple _projects_ itself, no need to add additional code.
+
+### Available callbacks
+When you initialise a class you can pass callbacks that will be called when project sends signals.
+Currently, following callbacks are supported:
+
+#### onInit
+This callback is called when _project_ is initialised (meaning that _project_ supports
+the standard and is ready to receive further signals):
+```js
+function onInit(version, signals) {
+    // here `version` is actual version of standard
+    // `signals` is the array of signals that project supports
+    console.log(genArtPlatform.downloadSignals);
+}
+```
+Important: after `onInit` is called you have access to `genArtPlatform.downloadSignals` array.
+Here you can find all possible image resolutions for download. You can use this array to build
+your UI.
+
+#### onLoadComplete
+This callback is called when _project_ sends a signal that it's finished loading:
+```js
+function onLoadComplete() {
+    // here you can hide loading UI
+}
+```
+
+#### onPreviewCapture
+This callback is called when _project_ sends a signal to capture a preview:
+```js
+function onCapturePreview() {
+    // here you can make a screenshot of the project for a static preview
+}
+```
+
+
+### Available methods
+#### triggerDownload
+
+
+This method triggers download of the asset. It accepts one argument - `key` of particular download
+option. You can retrieve these `key`s from `genArtPlatform.downloadSignals` array.
+```js
+genArtPlatform.triggerDownload("some-key");
+```
