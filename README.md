@@ -1,25 +1,40 @@
 # Generative platform standard
 
-Main idea is to establish communication between Generative project created by the artists and Generative platform displaying the project
-to maximise collector experience and overall integration of the project.
+Main idea is to establish communication between Generative project created by the artists and Generative platform
+displaying the project to maximise collector experience and overall integration of the project.
+
+* Jump [here](#instructions-for-artists) for the instructions for artists
+* Jump [here](#instructions-for-platforms) for the instructions for platforms
 
 ## Definitions
 
-Generative platform - platform displaying generative projects as an iframe (Verse, OpenSea, fxhash, ArtBlocks etc.)
-
-Generative project - code written by artists that is embedded as an iframe into the Generative platform.
+* Generative platform (_Platform_) - platform displaying generative projects as an iframe (Verse, OpenSea, fxhash, ArtBlocks etc.)
+* Generative project (_Project_) - code written by artists that is embedded as an iframe into the Generative platform.
 
 ## Motivation
 
-A lot of generative art collectors wants to download or print high quality outputs they purchase. However, present experience of downloading high quality asset consists of pressing a key or adding aditional parameters to the iframe URL. It should be easier for collectors to download high quality assets of their favourite artworks by simply clicking a download button that Generative platform implements based on their UI and product needs.
+> We also provide [a Figma page](https://www.figma.com/file/YZxAPU477ptfgzeLYd10Yt/Generative-Platform-Standard) with concept illustration.
 
-This project aims to define the standard between Generative platform and Generative projects to accomplish aforementiond task and address most common problems.
+There are many _Projects_ that are being displayed on different _Platforms_ as embedded iframes.
+However, _Platforms_ doesn't have a standard way to communicate with _Projects_. For example, _Platform_ is
+not aware is _Project_ is loaded or not, it doesn't know when to capture preview of the artwork or how to
+trigger downloading high quality asset. For the last feature (high quality assets), collectors have to pressing a key
+or add additional parameters to the iframe URL, which is not a good user experience.
+
+It should be easier for collectors to download high quality assets of their favourite artworks by simply clicking
+a download button that Generative platform implements based on their UI and product needs.
+
+This **Generative platform standard** aims to define the standard between _Generative platform_ and
+_Generative projects_ to accomplish aforementioned task and address most common problems.
 
 ## Current features
 
-- **Download Asset** - allows Generative Platform to trigger downloading high quality asset rendered by Generative project. Generative platform may implement download button according to their own product and branding guidelines.
-- **Preview Capture Trigger** - instructs Generative platform's preview capturing system to capture current state of the generated artwork.
-- **Delegated Loading** - allows Generative platform to show loading UI while Generative project is loading. When Generative project finishes loading
+- **Download Asset** - allows Generative Platform to trigger downloading high quality asset rendered by Generative
+project. Generative platform may implement download button according to their own product and branding guidelines.
+- **Preview Capture Trigger** - instructs Generative platform's preview capturing system to capture current state
+of the generated artwork.
+- **Delegated Loading** - allows Generative platform to show loading UI while Generative project is loading.
+When Generative project finishes loading
 
 ## Standard Definition
 
