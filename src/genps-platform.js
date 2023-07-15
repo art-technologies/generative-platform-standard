@@ -94,3 +94,7 @@ class GenArtPlatform {
     }, "*");
   }
 }
+
+if (typeof window !== "undefined") {
+  window.GenArtPlatform = GenArtPlatform;
+}
