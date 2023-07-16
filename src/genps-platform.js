@@ -13,7 +13,7 @@
  * - Generative Project - iframe corresponding to generative artwork
  */
 
-const GENERATIVE_PLATFORM_STANDARD_VERSION = "1";
+const GENERATIVE_PLATFORM_STANDARD_VERSION = "1.0.1";
 
 function downloadFile(dataUrl, filename) {
   const link = document.createElement("a");
@@ -74,12 +74,19 @@ class GenArtPlatform {
         this.pendingDownload = undefined;
       }
     })
-    this.iframe.addEventListener("load", () => {
+
+    const sendInitialMessage = () => {
       this.iframe.contentWindow.postMessage({
         type: "gps:f:init",
         v: GENERATIVE_PLATFORM_STANDARD_VERSION,
       }, "*");
-    })
+    }
+
+    if (this.iframe.contentWindow) {
+      sendInitialMessage()
+    } else {
+      this.iframe.addEventListener("load", sendInitialMessage);
+    }
   }
 
   get downloadSignals() {
