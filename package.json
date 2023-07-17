@@ -1,7 +1,7 @@
 {
   "name": "generative-platform-standard",
   "version": "1.0.0",
-  "main": "build/genps-platform.min.js",
+  "main": "build/genps-platform.min.mjs",
   "types": "types.d.ts",
   "repository": "git@github.com:art-technologies/generative-platform-standard.git",
   "author": "sergyperov <sergyperov@gmail.com>",
