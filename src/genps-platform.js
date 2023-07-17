@@ -25,7 +25,7 @@ function downloadFile(dataUrl, filename) {
   document.body.removeChild(link);
 }
 
-class GenArtPlatform {
+export class GenArtPlatform {
   // we will store all signals that are supported by a project here
   // we expect project to report the list of features within a postMessage
   implementsSignals = undefined;
@@ -49,6 +49,8 @@ class GenArtPlatform {
         this.implementsSignals = message.implementsSignals;
         if (typeof this.callbacks.onInit === "function") {
           this.callbacks.onInit(this.projectStandardVersion, this.implementsSignals);
+          // prevent from calling twice
+          this.callbacks.onInit = undefined;
         }
       }
 
@@ -82,11 +84,11 @@ class GenArtPlatform {
       }, "*");
     }
 
-    if (this.iframe.contentWindow) {
-      sendInitialMessage()
-    } else {
-      this.iframe.addEventListener("load", sendInitialMessage);
-    }
+    // there is no guaranteed way to check that iframe is ready to receive messages
+    // so let's add load listened and try to send message right away
+    // send two init messages should not cause any issues
+    this.iframe.addEventListener("load", sendInitialMessage);
+    sendInitialMessage();
   }
 
   get downloadSignals() {
@@ -100,8 +102,4 @@ class GenArtPlatform {
       key,
     }, "*");
   }
-}
-
-if (typeof window !== "undefined") {
-  window.GenArtPlatform = GenArtPlatform;
 }

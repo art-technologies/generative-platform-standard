@@ -1,7 +1,8 @@
 {
   "name": "generative-platform-standard",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "build/genps-platform.min.js",
+  "types": "types.d.ts",
   "repository": "git@github.com:art-technologies/generative-platform-standard.git",
   "author": "sergyperov <sergyperov@gmail.com>",
   "license": "MIT",
@@ -9,14 +10,18 @@
     "finalhandler": "^1.2.0",
     "serve-static": "^1.15.0"
   },
+  "type": "module",
   "devDependencies": {
     "express": "^4.18.2",
+    "rollup": "^3.26.3",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-terser": "^7.0.2",
     "uglify-js": "^3.17.4"
   },
   "scripts": {
     "build:project": "uglifyjs --compress --mangle --toplevel --output build/genps-project.min.js -- src/genps-project.js",
-    "build:platform": "uglifyjs --compress --mangle --output build/genps-platform.min.js -- src/genps-platform.js",
+    "build:platform": "rollup -c",
     "build": "yarn build:project && yarn build:platform",
-    "example": "node example/server.js"
+    "example": "node example/server.cjs"
   }
 }
