@@ -4,11 +4,11 @@ interface IGenArtPlatformCallbacks {
     onCapturePreview?: () => void
 }
 
-interface ISignal {
+export interface ISignal {
     type: string
 }
 
-interface IDownloadSignal extends ISignal {
+export interface IDownloadSignal extends ISignal {
     type: "gps:f:download"
     key: string
     text: string
