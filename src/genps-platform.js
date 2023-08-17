@@ -67,7 +67,6 @@ export class GenArtPlatform {
       }
 
       if (message.type === "gps:b:download") {
-        console.log("download signal received")
         // is project initiated download without prior request from platform - ignore it
         if (!this.pendingDownload) {
           return
@@ -75,7 +74,6 @@ export class GenArtPlatform {
 
         downloadFile(message.dataUrl, `${this.pendingDownload.key}.${message.ext}`);
         if (typeof this.pendingDownload.callback === "function") {
-          console.log("calling callback()")
           this.pendingDownload.callback();
         }
         this.pendingDownload = undefined;
