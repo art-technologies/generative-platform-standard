@@ -16,6 +16,6 @@ export interface IDownloadSignal extends ISignal {
 
 export declare class GenArtPlatform {
     constructor(iframe: HTMLIFrameElement, callbacks: IGenArtPlatformCallbacks);
-    triggerDownload: (key: string) => void;
+    triggerDownload: (key: string) => Promise<void>;
     downloadSignals: IDownloadSignal[]
 }

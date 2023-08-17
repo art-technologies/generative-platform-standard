@@ -72,6 +72,9 @@ export class GenArtPlatform {
           return
         }
 
+        if (typeof this.pendingDownload.callback === "function") {
+          this.pendingDownload.callback();
+        }
         downloadFile(message.dataUrl, `${this.pendingDownload.key}.${message.ext}`);
         this.pendingDownload = undefined;
       }
@@ -96,10 +99,20 @@ export class GenArtPlatform {
   }
 
   triggerDownload(key) {
-    this.pendingDownload = { key };
-    this.iframe.contentWindow.postMessage({
-      type: "gps:f:download",
-      key,
-    }, "*");
+    // TODO: in future, we probably want to allow multiple downloads
+    if (this.pendingDownload) {
+      return Promise.reject("Only one active download is supported at a time");
+    }
+
+    return new Promise((resolve) => {
+      this.pendingDownload = {
+        key,
+        callback: resolve,
+      }
+      this.iframe.contentWindow.postMessage({
+        type: "gps:f:download",
+        key,
+      }, "*");
+    })
   }
 }
