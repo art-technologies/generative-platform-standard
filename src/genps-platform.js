@@ -54,6 +54,12 @@ export class GenArtPlatform {
         }
       }
 
+      if (message.type === "gps:b:load-prog") {
+        if (typeof this.callbacks.onLoadingProgress === "function") {
+          this.callbacks.onLoadingProgress(message.p);
+        }
+      }
+
       if (message.type === "gps:b:load-compl") {
         if (typeof this.callbacks.onLoadingComplete === "function") {
           this.callbacks.onLoadingComplete();

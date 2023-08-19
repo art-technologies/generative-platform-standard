@@ -2,6 +2,7 @@ interface IGenArtPlatformCallbacks {
     onInit?: (version: string, signals: unknown) => void
     onLoadingComplete?: () => void
     onCapturePreview?: () => void
+    onLoadingProgress?: (progress: number) => void
 }
 
 export interface ISignal {

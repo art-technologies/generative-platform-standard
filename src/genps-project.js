@@ -39,6 +39,8 @@ window.addEventListener("message", (event) => {
     }
 })
 
+window.gpsLoadProg = (p) => replyPostMessage("gps:b:load-prog", { p })
+
 window.gpsLoadCompl = () => replyPostMessage("gps:b:load-compl")
 
 window.gpsCaptPrev = () => replyPostMessage("gps:b:capt-prev")
