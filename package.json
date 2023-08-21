@@ -1,6 +1,6 @@
 {
   "name": "generative-platform-standard",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "main": "build/genps-platform.min.mjs",
   "types": "types.d.ts",
   "repository": "git@github.com:art-technologies/generative-platform-standard.git",
