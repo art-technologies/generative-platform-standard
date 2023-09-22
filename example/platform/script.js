@@ -1,3 +1,5 @@
+import { GenArtPlatform } from "./genps-platform.js";
+
 initGenArtPlatform(document.getElementById("project-1"));
 initGenArtPlatform(document.getElementById("project-2"));
 

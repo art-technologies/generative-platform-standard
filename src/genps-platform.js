@@ -13,7 +13,7 @@
  * - Generative Project - iframe corresponding to generative artwork
  */
 
-const GENERATIVE_PLATFORM_STANDARD_VERSION = "1";
+const GENERATIVE_PLATFORM_STANDARD_VERSION = "1.0.1";
 
 function downloadFile(dataUrl, filename) {
   const link = document.createElement("a");
@@ -25,7 +25,7 @@ function downloadFile(dataUrl, filename) {
   document.body.removeChild(link);
 }
 
-class GenArtPlatform {
+export class GenArtPlatform {
   // we will store all signals that are supported by a project here
   // we expect project to report the list of features within a postMessage
   implementsSignals = undefined;
@@ -49,6 +49,8 @@ class GenArtPlatform {
         this.implementsSignals = message.implementsSignals;
         if (typeof this.callbacks.onInit === "function") {
           this.callbacks.onInit(this.projectStandardVersion, this.implementsSignals);
+          // prevent from calling twice
+          this.callbacks.onInit = undefined;
         }
       }
 
@@ -71,15 +73,25 @@ class GenArtPlatform {
         }
 
         downloadFile(message.dataUrl, `${this.pendingDownload.key}.${message.ext}`);
+        if (typeof this.pendingDownload.callback === "function") {
+          this.pendingDownload.callback();
+        }
         this.pendingDownload = undefined;
       }
     })
-    this.iframe.addEventListener("load", () => {
+
+    const sendInitialMessage = () => {
       this.iframe.contentWindow.postMessage({
         type: "gps:f:init",
         v: GENERATIVE_PLATFORM_STANDARD_VERSION,
       }, "*");
-    })
+    }
+
+    // there is no guaranteed way to check that iframe is ready to receive messages
+    // so let's add load listened and try to send message right away
+    // send two init messages should not cause any issues
+    this.iframe.addEventListener("load", sendInitialMessage);
+    sendInitialMessage();
   }
 
   get downloadSignals() {
@@ -87,14 +99,20 @@ class GenArtPlatform {
   }
 
   triggerDownload(key) {
-    this.pendingDownload = { key };
-    this.iframe.contentWindow.postMessage({
-      type: "gps:f:download",
-      key,
-    }, "*");
-  }
-}
+    // TODO: in future, we probably want to allow multiple downloads
+    if (this.pendingDownload) {
+      return Promise.reject("Only one active download is supported at a time");
+    }
 
-if (typeof window !== "undefined") {
-  window.GenArtPlatform = GenArtPlatform;
+    return new Promise((resolve) => {
+      this.pendingDownload = {
+        key,
+        callback: resolve,
+      }
+      this.iframe.contentWindow.postMessage({
+        type: "gps:f:download",
+        key,
+      }, "*");
+    })
+  }
 }

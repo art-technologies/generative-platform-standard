@@ -1,8 +1,21 @@
-const GENERATIVE_PLATFORM_STANDARD_VERSION = "1";
-const replyPostMessage = (type, payload) => window.parent.postMessage({
-    type,
-    ...payload,
-}, "*");
+const GENERATIVE_PLATFORM_STANDARD_VERSION = "1.0.1";
+
+// there is a chance what events like gps:b:load-compl or gps:b:capt-prev will be sent before gps:f:init
+// so we need to store them in queue and send them after gps:f:init
+window.gpsMsgQueue = [];
+window.gpsInited = false;
+
+const replyPostMessage = (type, payload) => {
+    if (!window.gpsInited) {
+        window.gpsMsgQueue.push({ type, payload });
+        return;
+    }
+
+    window.parent.postMessage({
+        type,
+        ...payload,
+    }, "*")
+};
 
 window.addEventListener("message", (event) => {
     if (!event.data) {
@@ -11,10 +24,13 @@ window.addEventListener("message", (event) => {
 
     switch(event.data.type) {
         case "gps:f:init":
+            window.gpsInited = true;
             window.gpsImplSignals && replyPostMessage("gps:b:init", {
                 implementsSignals: window.gpsImplSignals,
                 v: GENERATIVE_PLATFORM_STANDARD_VERSION,
-            })
+            });
+            window.gpsMsgQueue.forEach(({ type, payload }) => replyPostMessage(type, payload));
+            window.gpsMsgQueue = [];
             
         case "gps:f:download":
             window.gpsOnDownload?.(event.data.key, (dataUrl, ext) => {
